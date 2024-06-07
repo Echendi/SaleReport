@@ -14,7 +14,6 @@ class RecordTable(tk.Frame):
         self.create()
 
     def create(self):
-
         self.frame = ttk.Frame(self)
         self.frame.pack(fill=tk.BOTH, expand=True)
 
@@ -28,11 +27,18 @@ class RecordTable(tk.Frame):
         self.tree_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         self.table = ttk.Treeview(self.tree_frame, columns=("Valor Item", "Descuento", "Medio de pago"))
+
         self.table.heading("#0", text="Numero")
         self.table.heading("Valor Item", text="Valor Item")
         self.table.heading("Descuento", text="Descuento")
         self.table.heading("Medio de pago", text="Medio de pago")
+
+        self.table.column("Valor Item", anchor="e")
+        self.table.column("Descuento", anchor="e")
+        self.table.column("Medio de pago", anchor="e")
+
         self.table.bind("<Button-1>", self.on_button_click)
+
         self.table.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         self.table["height"] = 15

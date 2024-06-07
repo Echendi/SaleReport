@@ -118,7 +118,7 @@ class App:
 
 
 def format_number(number):
-    return '{:<2}{:>25}'.format('$', '{:,.2f}'.format(float(number)))
+    return '{:<2}{:>2}'.format('$', '{:,.2f}'.format(float(number)))
 
 
 def main():
