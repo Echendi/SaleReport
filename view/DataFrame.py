@@ -22,29 +22,19 @@ class DataFrame(tk.Frame):
     def create(self):
 
         self.data_frame = TitledFrame.TitledFrame(self, title="Datos del reporte")
-        self.data_frame.pack(side=tk.TOP, padx=30, pady=15, fill=tk.BOTH)
+        self.data_frame.pack(side=tk.TOP, padx=30, pady=10, fill=tk.BOTH)
 
-        ttk.Label(self.data_frame.content_frame, text="Fecha: ").grid(row=0, column=0)
+        ttk.Label(self.data_frame.content_frame, text="").grid(row=0, column=0, padx=30, sticky="ew")
+
+        ttk.Label(self.data_frame.content_frame, text="Fecha: ").grid(row=0, column=1, sticky="ew")
         self.calendar = DateEntry(self.data_frame.content_frame, selectmode="day", year=self.date.year,
                                   month=self.date.month,
-                                  day=self.date.day, date_pattern='dd-mm-yyyy')
-        self.calendar.grid(row=0, column=1)
+                                  day=self.date.day, date_pattern='dd-mm-yyyy', locale="es_ES")
+        self.calendar.grid(row=0, column=2, pady=5, sticky="ew")
 
-        btn = tk.Button(self.data_frame.content_frame, text="Cambiar a fecha seleccionada",
-                        command=self.get_selected_date)
-        btn.grid(row=0, column=2)
+        ttk.Label(self.data_frame.content_frame, text="").grid(row=0, column=3, padx=50, sticky="ew")
 
-        ttk.Label(self.data_frame.content_frame, text="").grid(row=0, column=3, padx=100)
-
-        ttk.Label(self.data_frame.content_frame, text="Lugar o sede: ").grid(row=0, column=4)
+        ttk.Label(self.data_frame.content_frame, text="Lugar o sede: ").grid(row=0, column=4, sticky="ew")
         sede_entry = ttk.Entry(self.data_frame.content_frame, textvariable=self.lugar_var)
-        sede_entry.grid(row=0, column=5)
-        btn = tk.Button(self.data_frame.content_frame, text="Cambiar a lugar seleccionado",
-                        command=self.get_selected_date)
-        btn.grid(row=0, column=6)
+        sede_entry.grid(row=0, column=5, pady=5, sticky="ew")
         pass
-
-    def get_selected_date(self):
-        selected_date = self.calendar.get_date()
-        formatted_date = selected_date.strftime("%d-%b-%Y")
-        print("Fecha seleccionada:", formatted_date)

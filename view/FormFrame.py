@@ -1,26 +1,27 @@
 import tkinter as tk
 from tkinter import ttk
-from datetime import datetime
 from . import TitledFrame
 
 
 def validate_numbers(value):
-    return value.isdigit()
+    if value == "":
+        return True
+    elif value.isdigit():
+        return True
+    elif value.count('.') == 1 and value.replace('.', '').isdigit():
+        return True
+    return False
 
 
 class FormFrame(tk.Frame):
     def __init__(self, master=None, insert_item=None):
         super().__init__(master)
 
-        self.date = datetime.today()
-
         self.form_frame = None
-        self.calendar = None
         self.root = master
 
         self.insert_item = insert_item
 
-        self.lugar_var = tk.StringVar()
         self.valorItem_var = tk.StringVar()
         self.descuentoItem_var = tk.StringVar()
         self.medioPago_var = tk.StringVar(value="EFECTIVO")
@@ -30,7 +31,7 @@ class FormFrame(tk.Frame):
     def create(self):
 
         self.form_frame = TitledFrame.TitledFrame(self, title="Ingresar nuevo registro")
-        self.form_frame.pack(side=tk.BOTTOM, padx=30, pady=15)
+        self.form_frame.pack(side=tk.BOTTOM, padx=30)
 
         ttk.Label(self.form_frame.content_frame, text="Valor del Item:", foreground="blue").grid(row=2, column=0,
                                                                                                  sticky="e", padx=25,
@@ -58,8 +59,3 @@ class FormFrame(tk.Frame):
                     style="Accent.TButton")
          .grid(row=5, column=0, columnspan=2, pady=10))
         pass
-
-    def get_selected_date(self):
-        selected_date = self.calendar.get_date()
-        formatted_date = selected_date.strftime("%d-%b-%Y")
-        print("Fecha seleccionada:", formatted_date)

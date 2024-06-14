@@ -47,9 +47,10 @@ class SaleReport:
         self._save_all_items_to_csv()
 
     def update_item(self, row_index, new_valor_item, new_discount, new_paid_method):
-        if row_index < 0 or row_index >= len(self.items):
+        row = int(row_index)
+        if row < 1 or row >= len(self.items)+1:
             raise IndexError("El índice de la fila está fuera de rango.")
-        self.items[row_index] = (new_valor_item, new_discount, new_paid_method)
+        self.items[row-1] = (new_valor_item, new_discount, new_paid_method)
         self._save_all_items_to_csv()
 
     def _save_all_items_to_csv(self):
@@ -74,22 +75,22 @@ class SaleReport:
         datafono_discount = 0
 
         for item in self.items:
-            general_total += int(item[0])
-            general_discount += int(item[1])
+            general_total += float(item[0])
+            general_discount += float(item[1])
 
             paid_method = item[2]
             if paid_method == "EFECTIVO":
-                cash_total += int(item[0])
-                cash_discount += int(item[1])
+                cash_total += float(item[0])
+                cash_discount += float(item[1])
             if paid_method == "DAVIPLATA":
-                daviplata_total += int(item[0])
-                daviplata_discount += int(item[1])
+                daviplata_total += float(item[0])
+                daviplata_discount += float(item[1])
             if paid_method == "NEQUI":
-                nequi_total += int(item[0])
-                nequi_discount += int(item[1])
+                nequi_total += float(item[0])
+                nequi_discount += float(item[1])
             if paid_method == "DATAFONO":
-                datafono_total += int(item[0])
-                datafono_discount += int(item[1])
+                datafono_total += float(item[0])
+                datafono_discount += float(item[1])
 
         return {
             "general_total": general_total,
@@ -103,6 +104,23 @@ class SaleReport:
             "daviplata_discount": daviplata_discount,
             "datafono_discount": datafono_discount
         }
+
+    def calculate_yi_sqp(self, totals):
+        nequi_total = totals["nequi_total"]
+        cash_total = totals["cash_total"]
+        daviplata_total = totals["daviplata_total"]
+        datafono_total = totals["datafono_total"]
+        return nequi_total + daviplata_total + datafono_total + (cash_total*0.25)
+
+    def clear_csv(self):
+        try:
+            with open(path, 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["valorItem", "descuentoItem", "medioPago"])  # Escribir encabezados
+            self.items = []  # Limpiar también la lista de items en memoria
+        except Exception as e:
+            raise Exception("Error al vaciar el archivo CSV:", e)
+
 
 
 if __name__ == '__main__':
